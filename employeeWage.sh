@@ -4,23 +4,25 @@
 echo "Welcome to Employee Wage Computation"
 
 #constants
-readonly IS_EMP_PRESENT=1
 readonly IS_PART_TIME=1
 readonly IS_FULL_TIME=2
 readonly EMP_RATE_PER_HRS=20
 
-#random to get 0 or 1
-empAttendance=$(( RANDOM%2 ))
+#random to get 1 or 2
+empCheck=$(( RANDOM%3 ))
 
-#check employee is present or absent and calculate salary
-if [ $IS_EMP_PRESENT -eq $empAttendance ]; then
-	empCheck=$(( RANDOM%3 ))
-	if [ $empCheck -eq $IS_PART_TIME ]; then
+#assign employee hours according to employee check
+case $empCheck in
+	$IS_PART_TIME)
 		empHours=4
-	elif [ $empCheck -eq $IS_FULL_TIME ]; then
+		;;
+	$IS_FULL_TIME)
 		empHours=8
-	fi
-else
-	empHours=0
-fi
+		;;
+	*)
+		empHours=0
+		;;
+esac
+
+#calculate salary
 salary=$(( empHours*EMP_RATE_PER_HRS ))
