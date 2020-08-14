@@ -14,7 +14,10 @@ readonly TOTAL_WORKING_HRS=100
 dayCount=0
 empWorkingHours=0
 
-#function get employee working hours
+#dictionary
+declare -A empDailyWage
+
+#function get employee's working hours
 function getWorkingHours()
 {
 	local empCheck=$1
@@ -43,12 +46,14 @@ function calculateDailyWage()
 
 while [[ $empWorkingHours -lt $TOTAL_WORKING_HRS && $dayCount -lt $NUM_OF_WORKING_DAYS ]]
 do
+	((dayCount++))
 	empHours="$( getWorkingHours $((RANDOM%3)) )"
 	empWorkingHours=$((empWorkingHours+empHours))
-	empDailyWage[$dayCount]="$( calculateDailyWage $empHours )"
-	((dayCount++))
-
+	empDailyWage["Day $dayCount"]="$( calculateDailyWage $empHours )"
 done
 
 totalSalary="$( calculateDailyWage $empWorkingHours )"
-echo "Daily Wage Of Employees: ${empDailyWage[@]}"
+
+#print day wise wage
+echo "day: ${!empDailyWage[@]}"
+echo "Day wise Wage: ${empDailyWage[@]}"
